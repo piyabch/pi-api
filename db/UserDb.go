@@ -7,6 +7,8 @@ import (
 	"github.com/piyabch/pi-api/model"
 )
 
+// Insert a user to a DB.
+// Return the auto generated user ID from the DB.
 func CreateUser(user model.User) (int, error) {
 	result, err := db.Exec("INSERT INTO user (firstname, lastname, email) VALUES (?, ?, ?)",
 		user.FirstName, user.LastName, user.Email)
@@ -20,6 +22,8 @@ func CreateUser(user model.User) (int, error) {
 	return int(id), nil
 }
 
+// Find a user by the unique user ID.
+// Return the matching user.
 func FindUserByID(id int) (model.User, error) {
 	var user model.User
 
@@ -33,6 +37,9 @@ func FindUserByID(id int) (model.User, error) {
 	return user, nil
 }
 
+// Find a user which the firstname
+// contains a input name string.
+// Return the matching users.
 func FindUsersByName(name string) ([]model.User, error) {
 	var users []model.User
 	searchName := "%" + name + "%"
@@ -54,6 +61,13 @@ func FindUsersByName(name string) ([]model.User, error) {
 	return users, nil
 }
 
+// Update user by the user ID.
+// The updatable fields are as follows.
+//   - Firstname
+//   - Lastname
+//   - Email
+//
+// Return the updated row count.
 func UpdateUser(user model.User) (int, error) {
 	result, err := db.Exec("UPDATE user SET firstname=?, lastname=?, email=? WHERE id=?",
 		user.FirstName, user.LastName, user.Email, user.ID)

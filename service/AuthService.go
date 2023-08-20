@@ -38,7 +38,7 @@ func IsAuthTokenValid(token string) bool {
 		}
 		return []byte(jwtSecret), nil
 	})
-	return jwtToken.Valid && err == nil
+	return jwtToken != nil && jwtToken.Valid && err == nil
 }
 
 // Generate JWT token from the given email.

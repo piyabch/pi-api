@@ -98,7 +98,7 @@ If the input email and password are correct, you will get the authorized token a
    Date: Sat, 19 Aug 2023 02:51:54 GMT\
    Content-Length: 75\
    \
-   {"ID":4,"FirstName":"John","LastName":"Doe","Email":"john.doe@example.com"}
+   {"id":4,"firstname":"John","lastname":"Doe","email":"john.doe@example.com"}
 
 <br />
 
@@ -112,7 +112,7 @@ If the input email and password are correct, you will get the authorized token a
    Date: Sun, 20 Aug 2023 04:07:31 GMT\
    Content-Length: 75\
    \
-   {"ID":4,"FirstName":"John","LastName":"Doe","Email":"john.doe@example.com"}
+   {"id":1,"firstname":"Weerachai","lastname":"Ruengrangsan","email":"wee.ru@gmail.com"}
 
 <br />
 
@@ -126,7 +126,7 @@ If the input email and password are correct, you will get the authorized token a
    Date: Sat, 19 Aug 2023 03:17:27 GMT\
    Content-Length: 74\
    \
-   {"ID":4,"FirstName":"_John","LastName":"_Doe","Email":"j.doe@example.com"}
+   {"id":4,"firstname":"_John","lastname":"_Doe","email":"j.doe@example.com"}
 
 <br />
 
@@ -140,7 +140,7 @@ If the input email and password are correct, you will get the authorized token a
    Date: Sun, 20 Aug 2023 04:10:11 GMT\
    Content-Length: 168\
    \
-   [{"ID":1,"FirstName":"Weerachai","LastName":"Ruengrangsan","Email":"wee.ru@gmail.com"},{"ID":2,"FirstName":"Paweena","LastName":"Suksawad","Email":"paw.suk@gmail.com"}]
+   [{"id":1,"firstname":"Weerachai","lastname":"Ruengrangsan","email":"wee.ru@gmail.com"},{"id":2,"firstname":"Paweena","lastname":"Suksawad","email":"paw.suk@gmail.com"}]
 
 <br />
 

@@ -15,6 +15,7 @@ import (
 )
 
 var host string
+var token string
 
 func init() {
 	webAddr := config.App.WebAddress
@@ -34,6 +35,25 @@ func init() {
 	host = "http://" + hostname + ":" + port
 }
 
+func TestAuth(t *testing.T) {
+	authData := model.AuthData{
+		Email:    "admin@example.com",
+		Password: "defaultpassword",
+	}
+	jsonValue, _ := json.Marshal(authData)
+	rsp, body, err := httpRequest(http.MethodPost, host+"/auth", jsonValue, "")
+	// check status code
+	assert.NoError(t, err)
+	assert.Equal(t, http.StatusOK, rsp.StatusCode)
+	// check token result
+	var authResult model.AuthResult
+	err = json.Unmarshal(body, &authResult)
+	assert.NoError(t, err)
+	assert.NotEmpty(t, authResult.Token)
+	// keep token for the next call
+	token = authResult.Token
+}
+
 func TestCreateUser(t *testing.T) {
 	user := model.User{
 		FirstName: "Nattapol",
@@ -41,7 +61,7 @@ func TestCreateUser(t *testing.T) {
 		Email:     "nat.man@gmail.com",
 	}
 	jsonValue, _ := json.Marshal(user)
-	rsp, body, err := httpRequest(http.MethodPost, host+"/users", jsonValue)
+	rsp, body, err := httpRequest(http.MethodPost, host+"/users", jsonValue, token)
 	// check status code
 	assert.NoError(t, err)
 	assert.Equal(t, http.StatusOK, rsp.StatusCode)
@@ -60,7 +80,7 @@ func TestUpdateUser(t *testing.T) {
 		Email:     "-",
 	}
 	jsonValue, _ := json.Marshal(user)
-	rsp, body, err := httpRequest(http.MethodPut, host+"/users", jsonValue)
+	rsp, body, err := httpRequest(http.MethodPut, host+"/users", jsonValue, token)
 	// check status code
 	assert.NoError(t, err)
 	assert.Equal(t, http.StatusOK, rsp.StatusCode)
@@ -74,7 +94,7 @@ func TestUpdateUser(t *testing.T) {
 func TestFindUserById(t *testing.T) {
 	userId := 1
 	param := strconv.Itoa(userId)
-	rsp, body, err := httpRequest(http.MethodGet, host+"/users/"+param, nil)
+	rsp, body, err := httpRequest(http.MethodGet, host+"/users/"+param, nil, token)
 	// check status code
 	assert.NoError(t, err)
 	assert.Equal(t, http.StatusOK, rsp.StatusCode)
@@ -87,7 +107,7 @@ func TestFindUserById(t *testing.T) {
 
 func TestFindUsersByName(t *testing.T) {
 	searchName := "wee"
-	rsp, body, err := httpRequest(http.MethodGet, host+"/users/search/?name="+searchName, nil)
+	rsp, body, err := httpRequest(http.MethodGet, host+"/users/search/?name="+searchName, nil, token)
 	// check status code
 	assert.NoError(t, err)
 	assert.Equal(t, http.StatusOK, rsp.StatusCode)
@@ -98,9 +118,12 @@ func TestFindUsersByName(t *testing.T) {
 	assert.Greater(t, len(resultUsers), 0)
 }
 
-func httpRequest(method string, url string, data []byte) (*http.Response, []byte, error) {
+func httpRequest(method string, url string, data []byte, authToken string) (*http.Response, []byte, error) {
 	req, err := http.NewRequest(method, url, bytes.NewBuffer(data))
 	req.Header.Set("Content-Type", "application/json; charset=UTF-8")
+	if authToken != "" {
+		req.Header.Set("Authorization", authToken)
+	}
 	client := &http.Client{}
 	rsp, err := client.Do(req)
 	if err == nil {

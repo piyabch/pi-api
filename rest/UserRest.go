@@ -26,6 +26,10 @@ func InitUserRest(e *gin.Engine) {
 // Return the JSON string of the newly created user
 // with a given ID.
 func createUser(c *gin.Context) {
+	// check authentication
+	if !CheckAuth(c) {
+		return
+	}
 	// parse the input
 	var inputData model.User
 	err := c.BindJSON(&inputData)
@@ -63,6 +67,10 @@ func createUser(c *gin.Context) {
 // Return the JSON string of the user
 // matched with a input ID.
 func findUserById(c *gin.Context) {
+	// check authentication
+	if !CheckAuth(c) {
+		return
+	}
 	// parse the input
 	id := c.Param("id")
 	// validate required fields
@@ -93,6 +101,10 @@ func findUserById(c *gin.Context) {
 // Return the JSON string of the users
 // founded with a input name.
 func findUserByName(c *gin.Context) {
+	// check authentication
+	if !CheckAuth(c) {
+		return
+	}
 	// parse the input
 	name := c.Query("name")
 	// validate required fields
@@ -120,6 +132,10 @@ func findUserByName(c *gin.Context) {
 // Return the JSON string of updated user
 // with a given ID.
 func updateUser(c *gin.Context) {
+	// check authentication
+	if !CheckAuth(c) {
+		return
+	}
 	// parse the input
 	var inputData model.User
 	err := c.BindJSON(&inputData)

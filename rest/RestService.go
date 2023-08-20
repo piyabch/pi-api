@@ -10,12 +10,14 @@ var engine *gin.Engine
 // Start the rest server.
 // The server startup is made by following steps.
 //   - Create the default gin engine.
+//   - Configure the authentication endpoints.
 //   - Configure the rest endpoints.
 //   - Start web server on the pre-configuration port.
 func Start() {
 	engine = gin.Default()
 	// configure endpoints
 	initDefaultPage(engine)
+	InitAuthRest(engine)
 	InitUserRest(engine)
 	// start sever on
 	engine.Run(config.App.WebAddress)

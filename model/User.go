@@ -3,11 +3,11 @@ package model
 // The user model
 type User struct {
 	// Generated user ID
-	ID int
+	ID int `json:"id"`
 	// User's first name / given name
-	FirstName string
+	FirstName string `json:"firstname"`
 	// User's last name / surname
-	LastName string
+	LastName string `json:"lastname"`
 	// User's email address
-	Email string
+	Email string `json:"email"`
 }
